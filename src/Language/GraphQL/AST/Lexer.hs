@@ -93,8 +93,8 @@ bang :: Parser T.Text
 bang = symbol "!"
 
 -- | Parser for "$".
-dollar :: Parser T.Text
-dollar = symbol "$"
+dollar :: Parser Char
+dollar = char '$'
 
 -- | Parser for "@".
 at :: Parser Char

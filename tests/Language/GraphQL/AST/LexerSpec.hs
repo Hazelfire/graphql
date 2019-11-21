@@ -72,7 +72,7 @@ spec = describe "Lexer" $ do
 
         it "lexes punctuation" $ do
             parse bang "" "!" `shouldParse` "!"
-            parse dollar "" "$" `shouldParse` "$"
+            parse dollar "" "$" `shouldParse` '$'
             runBetween parens `shouldSucceedOn` "()"
             parse spread "" "..." `shouldParse` "..."
             parse colon "" ":" `shouldParse` ":"
