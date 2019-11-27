@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [0.6.0.0] - 2019-11-27
 ### Changed
 - `Language.GraphQL.Encoder` moved to `Language.GraphQL.AST.Encoder`.
 - `Language.GraphQL.Parser` moved to `Language.GraphQL.AST.Parser`.
@@ -10,11 +10,39 @@ All notable changes to this project will be documented in this file.
   module should be imported qualified.
 - All `Language.GraphQL.AST.Core.Value` data constructor prefixes were removed.
   The module should be imported qualified.
-- Make `Language.GraphQL.AST.Core.Object` is now just a HashMap.
-- `Language.GraphQL.AST.Transform` is now isn't exposed publically anymore.
+- `Language.GraphQL.AST.Core.Object` is now just a HashMap.
+- `Language.GraphQL.AST.Transform` is isn't exposed publically anymore.
+- `Language.GraphQL.Schema.resolve` accepts a selection `Seq` (`Data.Sequence`)
+  instead of a list. Selections are stored as sequences internally as well.
+- Add a reader instance to the resolver's monad stack. The Reader contains
+  a Name/Value hashmap, which will contain resolver arguments.
 
 ### Added
-  - Nested fragment support.
+- Nested fragment support.
+
+### Fixed
+- Consume ignored tokens after `$` and `!`. I mistakenly assumed that
+  `$variable` is a single token, same as `Type!` is a single token. This is not
+  the case, for example `Variable` is defined as `$ Name`, so these are two
+  tokens, therefore whitespaces and commas after `$` and `!` should be
+  consumed.
+
+### Improved
+- `Language.GraphQL.AST.Parser.type_`: Try type parsers in a variable
+  definition in a different order to avoid using `but`.
+
+### Removed
+- `Language.GraphQL.AST.Arguments`. Use `[Language.GraphQL.AST.Argument]`
+  instead.
+- `Language.GraphQL.AST.Directives`. Use `[Language.GraphQL.AST.Directives]`
+  instead.
+- `Language.GraphQL.AST.VariableDefinitions`. Use
+  `[Language.GraphQL.AST.VariableDefinition]` instead.
+- `Language.GraphQL.AST.FragmentName`. Use `Language.GraphQL.AST.Name` instead.
+- `Language.GraphQL.Execute.Schema` - It was a resolver list, not a schema.
+- `Language.GraphQL.Schema`: `enum`, `enumA`, `wrappedEnum` and `wrappedEnumA`.
+  Use `scalar`, `scalarA`, `wrappedScalar` and `wrappedScalarA` instead.
+
 
 ## [0.5.1.0] - 2019-10-22
 ### Deprecated
@@ -120,6 +148,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Data types for the GraphQL language.
 
+[0.6.0.0]: https://github.com/caraus-ecms/graphql/compare/v0.5.1.0...v0.6.0.0
 [0.5.1.0]: https://github.com/caraus-ecms/graphql/compare/v0.5.0.1...v0.5.1.0
 [0.5.0.1]: https://github.com/caraus-ecms/graphql/compare/v0.5.0.0...v0.5.0.1
 [0.5.0.0]: https://github.com/caraus-ecms/graphql/compare/v0.4.0.0...v0.5.0.0
